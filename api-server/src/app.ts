@@ -1,8 +1,10 @@
 import express from 'express';
+import cors from 'cors';
 import { Pool } from 'pg';
 import axios from 'axios';
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 const pool = new Pool({
