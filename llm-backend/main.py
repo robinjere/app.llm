@@ -3,6 +3,7 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
+import uuid
 
 app = FastAPI()
 
@@ -16,7 +17,7 @@ mistral_tokenizer = AutoTokenizer.from_pretrained("mistralai/Mistral-7B-v0.1")
 class Query(BaseModel):
     model: str
     question: str
-    conversation_id: str
+    conversation_id: str = None
 
 conversations = {}
 
@@ -25,6 +26,10 @@ async def query_llm(query: Query):
     if query.model not in ["llama2", "mistral"]:
         raise HTTPException(status_code=400, detail="Invalid model selection")
     
+    # Generate a conversation ID if not provided
+    if not query.conversation_id:
+        query.conversation_id = str(uuid.uuid4())
+
     if query.conversation_id not in conversations:
         conversations[query.conversation_id] = []
     
@@ -45,7 +50,7 @@ async def query_llm(query: Query):
     
     conversations[query.conversation_id].append(f"AI: {response}")
     
-    return {"response": response}
+    return {"response": response, "conversation_id": query.conversation_id}
 
 if __name__ == "__main__":
     import uvicorn

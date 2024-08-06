@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,44 +12,53 @@
             margin: 0 auto;
             padding: 20px;
         }
+
         h1 {
             color: #333;
         }
+
         form {
             margin-bottom: 20px;
         }
-        label, select, input, button {
+
+        label,
+        select,
+        input,
+        button {
             margin-bottom: 10px;
             display: block;
         }
-        #response, #conversationHistory {
+
+        #response,
+        #conversationHistory {
             border: 1px solid #ddd;
             padding: 10px;
             margin-top: 20px;
         }
     </style>
 </head>
+
 <body>
     <h1>Distributed LLM System</h1>
-    
+
     <form id="queryForm">
         <label for="model">Select Model:</label>
         <select id="model" required>
             <option value="llama2">Llama2</option>
             <option value="mistral">Mistral</option>
         </select>
-        
+
         <label for="question">Enter your question:</label>
         <input type="text" id="question" required>
-        
-        <label for="conversationId">Conversation ID:</label>
-        <input type="text" id="conversationId" required>
-        
+
+        <label for="conversationId">Conversation ID (optional):</label>
+        <input type="text" id="conversationId">
+
         <button type="submit">Send Query</button>
     </form>
-    
+
     <div id="response"></div>
-    
+
     <h2>Conversation History</h2>
     <button id="loadHistory">Load Conversation History</button>
     <div id="conversationHistory"></div>
@@ -71,7 +81,11 @@
                     body: JSON.stringify({ model, question, conversationId }),
                 });
                 const data = await response.json();
-                document.getElementById('response').innerHTML = `<strong>Response:</strong> ${data.response}`;
+                document.getElementById('response').innerHTML = `
+                    <strong>Response:</strong> ${data.response}<br>
+                    <strong>Conversation ID:</strong> ${data.conversationId}
+                `;
+                document.getElementById('conversationId').value = data.conversationId;
             } catch (error) {
                 console.error('Error:', error);
                 document.getElementById('response').textContent = 'An error occurred';
@@ -100,4 +114,5 @@
         });
     </script>
 </body>
+
 </html>
