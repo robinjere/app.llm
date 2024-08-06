@@ -6,7 +6,8 @@ This project consists of a Python backend for running LLM models (Llama2 and Mis
 
 - Docker
 - Docker Compose
-
+- Huging Face Token (for Hugging Face models) - Optional
+  
 ## Setup and Running
 
 1. Clone this repository
