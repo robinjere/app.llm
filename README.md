@@ -39,11 +39,11 @@ This project consists of a Python backend for running LLM models (Llama2 and Mis
 
 ### Example Request
 
-```json
+```bash
 curl --location 'http://localhost:3000/query' \
 --header 'Content-Type: application/json' \
 --data '{
   "model": "llama2",
-  "question": "What is the capital of France?",
+  "question": "What is the capital of Tanzania?",
   "conversationId": "conv1"
 }'
