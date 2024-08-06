@@ -19,6 +19,13 @@ services:
     depends_on:
       - db
       - llm-backend
+      
+  frontend:
+    image: nginx:alpine
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+    ports:
+      - "8080:80"
 
   db:
     image: postgres:13
@@ -28,13 +35,6 @@ services:
       - POSTGRES_DB=llm_conversations
     volumes:
       - pgdata:/var/lib/postgresql/data
-      
-  frontend:
-    image: nginx:alpine
-    volumes:
-      - ./frontend:/usr/share/nginx/html:ro
-    ports:
-      - "8080:80"
 
 volumes:
   pgdata:
