@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  llm-backend:
+    build: ./llm-backend
+    ports:
+      - "8000:8000"
+
+  api-server:
+    build: ./api-server
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_USER=postgres
+      - DB_HOST=db
+      - DB_NAME=llm_conversations
+      - DB_PASSWORD=Test1234
+      - DB_PORT=5432
+    depends_on:
+      - db
+      - llm-backend
+
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Test1234
+      - POSTGRES_DB=llm_conversations
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      
+  frontend:
+    image: nginx:alpine
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+    ports:
+      - "8080:80"
+
+volumes:
+  pgdata:

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distributed LLM System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        label, select, input, button {
+            margin-bottom: 10px;
+            display: block;
+        }
+        #response, #conversationHistory {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Distributed LLM System</h1>
+    
+    <form id="queryForm">
+        <label for="model">Select Model:</label>
+        <select id="model" required>
+            <option value="llama2">Llama2</option>
+            <option value="mistral">Mistral</option>
+        </select>
+        
+        <label for="question">Enter your question:</label>
+        <input type="text" id="question" required>
+        
+        <label for="conversationId">Conversation ID:</label>
+        <input type="text" id="conversationId" required>
+        
+        <button type="submit">Send Query</button>
+    </form>
+    
+    <div id="response"></div>
+    
+    <h2>Conversation History</h2>
+    <button id="loadHistory">Load Conversation History</button>
+    <div id="conversationHistory"></div>
+
+    <script>
+        const API_URL = 'http://localhost:3000';
+
+        document.getElementById('queryForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const model = document.getElementById('model').value;
+            const question = document.getElementById('question').value;
+            const conversationId = document.getElementById('conversationId').value;
+
+            try {
+                const response = await fetch(`${API_URL}/query`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ model, question, conversationId }),
+                });
+                const data = await response.json();
+                document.getElementById('response').innerHTML = `<strong>Response:</strong> ${data.response}`;
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('response').textContent = 'An error occurred';
+            }
+        });
+
+        document.getElementById('loadHistory').addEventListener('click', async () => {
+            try {
+                const response = await fetch(`${API_URL}/conversations`);
+                const data = await response.json();
+                const historyHtml = data.map(conv => `
+                    <div>
+                        <strong>ID:</strong> ${conv.id}<br>
+                        <strong>Model:</strong> ${conv.model}<br>
+                        <strong>Question:</strong> ${conv.question}<br>
+                        <strong>Response:</strong> ${conv.response}<br>
+                        <strong>Created at:</strong> ${new Date(conv.created_at).toLocaleString()}
+                    </div>
+                    <hr>
+                `).join('');
+                document.getElementById('conversationHistory').innerHTML = historyHtml;
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('conversationHistory').textContent = 'An error occurred while loading history';
+            }
+        });
+    </script>
+</body>
+</html>
