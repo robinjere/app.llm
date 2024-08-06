@@ -14,7 +14,7 @@ This project consists of a Python backend for running LLM models (Llama2 and Mis
 2. Navigate to the project directory
 3. Run the following command to start the entire system:
 
-    `docker-compose up --build`
+    `docker compose up --build`
 
 4. The API server will be available at `http://localhost:3000`
 5. The frontend interface will be available at `http://localhost:8080`
@@ -40,8 +40,10 @@ This project consists of a Python backend for running LLM models (Llama2 and Mis
 ### Example Request
 
 ```json
-{
+curl --location 'http://localhost:3000/query' \
+--header 'Content-Type: application/json' \
+--data '{
   "model": "llama2",
   "question": "What is the capital of France?",
   "conversationId": "conv1"
-}
+}'
