@@ -6,6 +6,18 @@ services:
     ports:
       - "8000:8000"
 
+    environment:
+      - HUGGINGFACE_TOKEN=${HUGGINGFACE_TOKEN}
+
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Test1234
+      - POSTGRES_DB=llm_conversations
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
   api-server:
     build: ./api-server
     ports:
@@ -26,15 +38,6 @@ services:
       - ./frontend:/usr/share/nginx/html:ro
     ports:
       - "8080:80"
-
-  db:
-    image: postgres:13
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=Test1234
-      - POSTGRES_DB=llm_conversations
-    volumes:
-      - pgdata:/var/lib/postgresql/data
 
 volumes:
   pgdata:

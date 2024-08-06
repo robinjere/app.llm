@@ -4,12 +4,21 @@ from pydantic import BaseModel
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
 import uuid
+from huggingface_hub import login
 
 app = FastAPI()
 
+# Login to Hugging Face
+# login(token=os.getenv("HUGGINGFACE_TOKEN"))
+
 # Load models
-llama2_model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-2-7b-chat-hf")
-llama2_tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-chat-hf")
+# This requires authorization from Meta and a token (Can't share my token here)
+# llama2_model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-2-7b-chat-hf", use_auth_token=True)
+# llama2_tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-chat-hf", use_auth_token=True)
+
+# To save time we'll use a pre-trained alternative model
+llama2_model = AutoModelForCausalLM.from_pretrained("daryl149/llama-2-7b-chat-hf")
+llama2_tokenizer = AutoTokenizer.from_pretrained("daryl149/llama-2-7b-chat-hf")
 
 mistral_model = AutoModelForCausalLM.from_pretrained("mistralai/Mistral-7B-v0.1")
 mistral_tokenizer = AutoTokenizer.from_pretrained("mistralai/Mistral-7B-v0.1")
