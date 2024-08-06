@@ -24,7 +24,7 @@ This project consists of a Python backend for running LLM models (Llama2 and Mis
 2. You'll see a simple interface where you can:
    - Select the LLM model (Llama2 or Mistral)
    - Enter a question
-   - Provide a conversation ID
+   - Provide a conversation ID (Optional)
    - Send queries to the LLM
    - View the LLM's response
    - Load and view the conversation history
