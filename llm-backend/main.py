@@ -17,11 +17,11 @@ app = FastAPI()
 # llama2_tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-chat-hf", use_auth_token=True)
 
 # To save time we'll use a pre-trained alternative model
-llama2_model = AutoModelForCausalLM.from_pretrained("daryl149/llama-2-7b-chat-hf")
-llama2_tokenizer = AutoTokenizer.from_pretrained("daryl149/llama-2-7b-chat-hf")
+llama2_model = AutoModelForCausalLM.from_pretrained("daryl149/llama-2-7b-chat-hf", local_files_only=True)
+llama2_tokenizer = AutoTokenizer.from_pretrained("daryl149/llama-2-7b-chat-hf", local_files_only=True)
 
-mistral_model = AutoModelForCausalLM.from_pretrained("mistralai/Mistral-7B-v0.1")
-mistral_tokenizer = AutoTokenizer.from_pretrained("mistralai/Mistral-7B-v0.1")
+mistral_model = AutoModelForCausalLM.from_pretrained("mistralai/Mistral-7B-v0.1", local_files_only=True)
+mistral_tokenizer = AutoTokenizer.from_pretrained("mistralai/Mistral-7B-v0.1", local_files_only=True)
 
 class Query(BaseModel):
     model: str

@@ -5,6 +5,8 @@ services:
     build: ./llm-backend
     ports:
       - "8000:8000"
+    environment:
+      - HUGGINGFACE_TOKEN=${HUGGINGFACE_TOKEN}
 
   api-server:
     build: ./api-server
@@ -14,7 +16,7 @@ services:
       - DB_USER=postgres
       - DB_HOST=db
       - DB_NAME=llm_conversations
-      - DB_PASSWORD=Test1234
+      - DB_PASSWORD=postgres
       - DB_PORT=5432
     depends_on:
       - db
@@ -24,10 +26,11 @@ services:
     image: postgres:13
     environment:
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=Test1234
+      - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=llm_conversations
     volumes:
       - pgdata:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
       
   frontend:
     image: nginx:alpine
